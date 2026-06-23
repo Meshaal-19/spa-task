@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #1f2937;
+  color: white;
+
+  padding: 16px 32px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+
+  margin-left: 20px;
+}
+
+.container {
+  padding: 40px;
+}
