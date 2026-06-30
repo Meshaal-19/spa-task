@@ -9,7 +9,6 @@ const initialFormData = {
   message: "",
 };
 
-
 function Layout() {
   return (
     <>
@@ -41,6 +40,7 @@ function About() {
 function Contact() {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -54,6 +54,8 @@ function Contact() {
       ...previousErrors,
       [name]: "",
     }));
+
+    setSubmitted(false);
   }
 
   function handleSubmit(e) {
@@ -64,8 +66,7 @@ function Contact() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      alert("Form submitted successfully!");
-
+      setSubmitted(true);
       setFormData(initialFormData);
       setErrors({});
     }
@@ -113,6 +114,10 @@ function Contact() {
 
         <button type="submit">Submit</button>
       </form>
+
+      {submitted && (
+        <p className="success-message">Form submitted successfully!</p>
+      )}
     </>
   );
 }

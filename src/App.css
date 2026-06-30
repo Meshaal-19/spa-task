@@ -63,3 +63,11 @@ p {
 
   color: red;
 }
+
+.success-message {
+  margin-top: 16px;
+
+  color: green;
+
+  font-weight: bold;
+}
