@@ -2,6 +2,33 @@ import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
 
+const initialFormData = {
+  name: "",
+  email: "",
+  message: "",
+};
+
+function validateForm(formData) {
+  const errors = {};
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!formData.name.trim()) {
+    errors.name = "Name is required";
+  }
+
+  if (!formData.email.trim()) {
+    errors.email = "Email is required";
+  } else if (!emailRegex.test(formData.email)) {
+    errors.email = "Invalid email address";
+  }
+
+  if (!formData.message.trim()) {
+    errors.message = "Message is required";
+  }
+
+  return errors;
+}
+
 function Layout() {
   return (
     <>
@@ -31,38 +58,34 @@ function About() {
 }
 
 function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormData((previousData) => ({
+      ...previousData,
+      [name]: value,
+    }));
+
+    setErrors((previousErrors) => ({
+      ...previousErrors,
+      [name]: "",
+    }));
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newErrors = {};
+    const validationErrors = validateForm(formData);
 
-    if (!name.trim()) {
-      newErrors.name = "Name is required";
-    }
+    setErrors(validationErrors);
 
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!email.includes("@")) {
-      newErrors.email = "Invalid email address";
-    }
-
-    if (!message.trim()) {
-      newErrors.message = "Message is required";
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(validationErrors).length === 0) {
       alert("Form submitted successfully!");
 
-      setName("");
-      setEmail("");
-      setMessage("");
+      setFormData(initialFormData);
       setErrors({});
     }
   }
@@ -75,38 +98,35 @@ function Contact() {
         <div>
           <input
             type="text"
+            name="name"
             placeholder="Name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              setErrors((prev) => ({ ...prev, name: "" }));
-            }}
+            value={formData.name}
+            onChange={handleChange}
           />
+
           <p>{errors.name}</p>
         </div>
 
         <div>
           <input
             type="email"
+            name="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors((prev) => ({ ...prev, email: "" }));
-            }}
+            value={formData.email}
+            onChange={handleChange}
           />
+
           <p>{errors.email}</p>
         </div>
 
         <div>
           <textarea
+            name="message"
             placeholder="Message"
-            value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-              setErrors((prev) => ({ ...prev, message: "" }));
-            }}
+            value={formData.message}
+            onChange={handleChange}
           />
+
           <p>{errors.message}</p>
         </div>
 
