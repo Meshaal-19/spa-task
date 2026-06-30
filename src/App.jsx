@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
+import { validateForm } from "./validation";
 
 const initialFormData = {
   name: "",
@@ -8,26 +9,6 @@ const initialFormData = {
   message: "",
 };
 
-function validateForm(formData) {
-  const errors = {};
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!formData.name.trim()) {
-    errors.name = "Name is required";
-  }
-
-  if (!formData.email.trim()) {
-    errors.email = "Email is required";
-  } else if (!emailRegex.test(formData.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!formData.message.trim()) {
-    errors.message = "Message is required";
-  }
-
-  return errors;
-}
 
 function Layout() {
   return (
