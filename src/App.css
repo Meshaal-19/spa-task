@@ -5,10 +5,13 @@ body {
 
 .navbar {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 
   background: #1f2937;
+
   color: white;
 
   padding: 16px 32px;
@@ -16,6 +19,7 @@ body {
 
 .navbar a {
   color: white;
+
   text-decoration: none;
 
   margin-left: 20px;
@@ -23,4 +27,47 @@ body {
 
 .container {
   padding: 40px;
+}
+
+form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  max-width: 500px;
+}
+
+input,
+textarea {
+  padding: 12px;
+
+  font-size: 16px;
+}
+
+textarea {
+  height: 120px;
+}
+
+button {
+  width: 150px;
+
+  padding: 12px;
+
+  cursor: pointer;
+}
+
+p {
+  margin: 5px 0 0 0;
+
+  color: red;
+}
+
+.success-message {
+  margin-top: 16px;
+
+  color: green;
+
+  font-weight: bold;
 }
