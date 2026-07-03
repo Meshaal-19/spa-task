@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
 
-
 # ── User ──────────────────────────────────────────────────────────────────────
 
 class UserCreate(BaseModel):

@@ -11,7 +11,9 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 def get_note_or_404(note_id: int, db: Session) -> Note:
     note = db.get(Note, note_id)
     if note is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"
+        )
     return note
 
 
@@ -23,7 +25,9 @@ def list_notes(db: Session = Depends(get_db)):
 @router.post("/", response_model=NoteOut, status_code=status.HTTP_201_CREATED)
 def create_note(payload: NoteCreate, db: Session = Depends(get_db)):
     if db.get(User, payload.user_id) is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
     note = Note(**payload.model_dump())
     db.add(note)
     db.commit()
