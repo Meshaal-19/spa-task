@@ -56,30 +56,32 @@ Set up Vitest and React Testing Library. Wrote 6 tests covering form validation,
 
 ## 3 July 2026
 
-### Task: Build a FastAPI + SQLAlchemy REST API (Week 2)
+### Task: Build a REST API backend
 
 Prompt:
-Build a FastAPI backend with SQLAlchemy and SQLite. Create a User model and a Note model with a foreign key relationship. Implement full CRUD endpoints for Notes with Pydantic validation and correct HTTP status codes.
+How do I build a simple REST API using FastAPI with a database?
 
 Outcome:
-Created backend/ with User and Note ORM models, Pydantic schemas, and full CRUD on /notes (GET list, POST 201, GET by id, PUT 200, DELETE 204, 404 on missing). Also added /users endpoints. SQLite DB auto-created on startup.
+Built a FastAPI backend with User and Note models using SQLAlchemy and SQLite. 
+Full CRUD endpoints for notes working. Auto-generated docs available at /docs.
 
 ---
 
-### Task: Add ruff linter to the backend
+### Task: Add a linter to the backend
 
 Prompt:
-How do I configure ruff as a linter for a FastAPI project using pyproject.toml?
+How do I add a linter to a Python FastAPI project?
 
 Outcome:
-Added pyproject.toml with ruff rules (E, W, F, I, UP). Fixed 5 issues — 4 long lines wrapped and 1 isort fix applied automatically. Ruff passes clean.
+Set up ruff using pyproject.toml. Fixed a few style issues. Clean pass.
 
 ---
 
-### Task: Write pytest tests for the Notes API
+### Task: Write backend tests
 
 Prompt:
-Write pytest tests for a FastAPI CRUD API using an in-memory SQLite test database and dependency injection to override get_db.
+How do I write tests for a FastAPI API?
 
 Outcome:
-Created conftest.py with a TestClient fixture that overrides the DB session with a clean SQLite test database per test. Wrote 6 tests: create note (201), get all notes, get one note, update note, delete note (204), and 404 for missing note. All 6 passing.
+Set up pytest with a test database. Wrote 6 tests covering creating, 
+reading, updating, deleting notes, and a 404 case. All passing.
