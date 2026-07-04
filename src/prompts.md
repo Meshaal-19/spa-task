@@ -85,3 +85,45 @@ How do I write tests for a FastAPI API?
 Outcome:
 Set up pytest with a test database. Wrote 6 tests covering creating, 
 reading, updating, deleting notes, and a 404 case. All passing.
+
+---
+
+## 4 July 2026
+
+### Task: Add JWT authentication to the backend
+
+Prompt:
+How do I add login and registration to a FastAPI app using JWT tokens?
+
+Outcome:
+Added register and login endpoints. Passwords are hashed with bcrypt. Login returns a JWT token. All notes endpoints now require a valid token.
+
+---
+
+### Task: Add role-based authorization
+
+Prompt:
+How do I restrict certain API endpoints to admin users only in FastAPI?
+
+Outcome:
+Added an is_admin field to the User model. Created a require_admin dependency. Admin users can access GET /notes/all to see every note. Regular users get a 403.
+
+---
+
+### Task: Write an integration test
+
+Prompt:
+How do I write an integration test for a FastAPI app that tests the full user flow?
+
+Outcome:
+Wrote a test that registers a user, logs in, gets a token, creates a note, and fetches it back. Each step checks the status code and response data.
+
+---
+
+### Task: Connect the React frontend to the FastAPI backend
+
+Prompt:
+How do I connect a React frontend to a FastAPI backend with JWT authentication?
+
+Outcome:
+Added Login and Register pages. JWT token stored in localStorage after login. Notes page fetches from the API and supports create, edit and delete. Navbar shows a logout button when logged in. Used a Vite dev proxy to avoid CORS issues in development.
