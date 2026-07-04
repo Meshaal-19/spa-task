@@ -1,12 +1,22 @@
+async function parseError(response, fallback) {
+  try {
+    const data = await response.json();
+    return data.detail || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function register(name, email, password) {
   const response = await fetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.detail || "Registration failed");
-  return data;
+  if (!response.ok) {
+    throw new Error(await parseError(response, "Registration failed"));
+  }
+  return response.json();
 }
 
 export async function login(email, password) {
@@ -15,7 +25,8 @@ export async function login(email, password) {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ username: email, password }).toString(),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.detail || "Login failed");
-  return data;
+  if (!response.ok) {
+    throw new Error(await parseError(response, "Login failed"));
+  }
+  return response.json();
 }
