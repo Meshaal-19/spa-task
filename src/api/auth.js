@@ -1,7 +1,5 @@
-const BASE_URL = "http://127.0.0.1:8000";
-
 export async function register(name, email, password) {
-  const response = await fetch(`${BASE_URL}/auth/register`, {
+  const response = await fetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
@@ -12,7 +10,7 @@ export async function register(name, email, password) {
 }
 
 export async function login(email, password) {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
+  const response = await fetch("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ username: email, password }).toString(),

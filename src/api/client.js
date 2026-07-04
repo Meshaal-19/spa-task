@@ -1,5 +1,3 @@
-const BASE_URL = "http://127.0.0.1:8000";
-
 export async function request(path, options = {}) {
   const token = localStorage.getItem("token");
   const headers = {
@@ -8,7 +6,7 @@ export async function request(path, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+  const response = await fetch(path, { ...options, headers });
 
   if (response.status === 401) {
     localStorage.removeItem("token");
