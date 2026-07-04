@@ -18,6 +18,23 @@ def get_owned_note_or_404(note_id: int, current_user: User, db: Session) -> Note
     return note
 
 
+def require_admin(current_user: User = Depends(get_current_user)) -> User:
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+    return current_user
+
+
+@router.get("/all", response_model=list[NoteOut])
+def list_all_notes(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    return db.query(Note).all()
+
+
 @router.get("/", response_model=list[NoteOut])
 def list_notes(
     db: Session = Depends(get_db),

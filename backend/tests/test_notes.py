@@ -100,3 +100,34 @@ def test_user_cannot_access_another_users_note(client):
         headers={"Authorization": f"Bearer {bob_token}"},
     )
     assert response.status_code == 404
+
+
+def test_admin_can_list_all_notes(admin_client, client):
+    # Create a second user with their own note
+    client.post(
+        "/auth/register",
+        json={"name": "Bob", "email": "bob@example.com", "password": "secret123"},
+    )
+    bob_token = client.post(
+        "/auth/login",
+        data={"username": "bob@example.com", "password": "secret123"},
+    ).json()["access_token"]
+    client.post(
+        "/notes/",
+        json={"title": "Bob's note", "body": ""},
+        headers={"Authorization": f"Bearer {bob_token}"},
+    )
+
+    # Admin creates their own note
+    admin_client.post("/notes/", json={"title": "Admin note", "body": ""})
+
+    # Admin should see both notes via /notes/all
+    response = admin_client.get("/notes/all")
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+
+
+def test_non_admin_cannot_access_notes_all(auth_client):
+    response = auth_client.get("/notes/all")
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Admin access required"

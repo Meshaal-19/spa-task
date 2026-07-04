@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database import Base, get_db
 from main import app
+from models import User
 
 TEST_DATABASE_URL = "sqlite:///./test.db"
 
@@ -34,6 +35,34 @@ def client(reset_db):
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def admin_client(client):
+    """A TestClient whose user has is_admin=True, set directly in the DB."""
+    client.post(
+        "/auth/register",
+        json={
+            "name": "Admin",
+            "email": "admin@example.com",
+            "password": "secret123",
+        },
+    )
+    # Flip is_admin directly — there is intentionally no public API for this
+    db = TestingSessionLocal()
+    try:
+        user = db.query(User).filter(User.email == "admin@example.com").first()
+        user.is_admin = True
+        db.commit()
+    finally:
+        db.close()
+
+    token = client.post(
+        "/auth/login",
+        data={"username": "admin@example.com", "password": "secret123"},
+    ).json()["access_token"]
+    client.headers.update({"Authorization": f"Bearer {token}"})
+    return client
 
 
 @pytest.fixture
