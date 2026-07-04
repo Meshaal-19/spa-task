@@ -37,8 +37,20 @@ def client(reset_db):
 
 
 @pytest.fixture
-def user(client):
-    response = client.post(
-        "/users/", json={"name": "Alice", "email": "alice@example.com"}
+def auth_client(client):
+    """A TestClient pre-loaded with a registered user's Bearer token."""
+    client.post(
+        "/auth/register",
+        json={
+            "name": "Alice",
+            "email": "alice@example.com",
+            "password": "secret123",
+        },
     )
-    return response.json()
+    token_response = client.post(
+        "/auth/login",
+        data={"username": "alice@example.com", "password": "secret123"},
+    )
+    token = token_response.json()["access_token"]
+    client.headers.update({"Authorization": f"Bearer {token}"})
+    return client
