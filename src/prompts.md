@@ -126,4 +126,4 @@ Prompt:
 How do I connect a React frontend to a FastAPI backend with JWT authentication?
 
 Outcome:
-Added Login and Register pages. JWT token stored in localStorage after login. Notes page fetches from the API and supports create, edit and delete. Navbar shows a logout button when logged in. Used a Vite dev proxy to avoid CORS issues in development.
+Added Login and Register pages. JWT token stored in localStorage after login. Notes page fetches from the API and supports create, edit and delete. Navbar shows a logout button when logged in.
