@@ -6,6 +6,17 @@ register → login → create note → fetch note
 Each step asserts its own status code and shape before passing data to the next.
 """
 
+from datetime import datetime, timedelta, timezone
+
+from jose import jwt
+
+
+def _get_token(client, *, name="Carol", email="carol@example.com", password="pass1234"):
+    """Register a user and return their access token."""
+    client.post("/auth/register", json={"name": name, "email": email, "password": password})
+    resp = client.post("/auth/login", data={"username": email, "password": password})
+    return resp.json()["access_token"]
+
 
 def test_register_login_create_fetch(client):
     # 1. Register a new user
@@ -50,3 +61,20 @@ def test_register_login_create_fetch(client):
     assert fetched["id"] == note_id
     assert fetched["title"] == "Integration note"
     assert fetched["user_id"] == user["id"]
+
+
+def test_expired_token_is_rejected(client):
+    from auth import ALGORITHM, SECRET_KEY
+
+    expired_token = jwt.encode(
+        {"sub": "999", "exp": datetime.now(timezone.utc) - timedelta(minutes=1)},
+        SECRET_KEY,
+        algorithm=ALGORITHM,
+    )
+    resp = client.get("/notes/", headers={"Authorization": f"Bearer {expired_token}"})
+    assert resp.status_code == 401
+
+
+def test_invalid_token_is_rejected(client):
+    resp = client.get("/notes/", headers={"Authorization": "Bearer not.a.real.token"})
+    assert resp.status_code == 401

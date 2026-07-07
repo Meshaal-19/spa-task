@@ -1,7 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
 
-# ── User ──────────────────────────────────────────────────────────────────────
-
 
 class UserRegister(BaseModel):
     name: str = Field(min_length=1, max_length=100)
@@ -17,15 +15,9 @@ class UserOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Auth ──────────────────────────────────────────────────────────────────────
-
-
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
-
-
-# ── Note ──────────────────────────────────────────────────────────────────────
 
 
 class NoteCreate(BaseModel):
