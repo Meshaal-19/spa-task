@@ -3,46 +3,57 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* ── Navbar ───────────────────────────────────────────────────────────────── */
+
 .navbar {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   background: #1f2937;
-
   color: white;
-
   padding: 16px 32px;
 }
 
 .navbar a {
   color: white;
-
   text-decoration: none;
-
   margin-left: 20px;
 }
+
+.logout-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 20px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  width: auto;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Layout container ─────────────────────────────────────────────────────── */
 
 .container {
   padding: 40px;
 }
 
+/* ── Contact form (scoped to keep existing behaviour) ─────────────────────── */
+
 form {
   display: flex;
-
   flex-direction: column;
-
   gap: 15px;
-
   max-width: 500px;
 }
 
 input,
 textarea {
   padding: 12px;
-
   font-size: 16px;
 }
 
@@ -52,22 +63,249 @@ textarea {
 
 button {
   width: 150px;
-
   padding: 12px;
-
   cursor: pointer;
 }
 
 p {
   margin: 5px 0 0 0;
-
   color: red;
 }
 
 .success-message {
   margin-top: 16px;
-
   color: green;
-
   font-weight: bold;
+}
+
+/* ── Button system ────────────────────────────────────────────────────────── */
+
+.btn {
+  width: auto;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #d1d5db;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* ── Error banner ─────────────────────────────────────────────────────────── */
+
+.error-banner {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  color: #991b1b;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+}
+
+/* ── Auth pages (Login / Register) ───────────────────────────────────────── */
+
+.auth-page {
+  min-height: 100vh;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-card h1 {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  color: #111827;
+}
+
+.auth-card form {
+  max-width: none;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.auth-link a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* ── Notes page ───────────────────────────────────────────────────────────── */
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.notes-header h1 {
+  margin: 0;
+}
+
+.notes-loading {
+  color: #6b7280;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.notes-empty {
+  color: #6b7280;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.note-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+  max-width: none;
+  padding: 20px;
+}
+
+.note-form input,
+.note-form textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note-form textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.notes-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.note-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.note-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.note-card-body {
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: none;
+}
+
+.note-edit-form input,
+.note-edit-form textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note-edit-form textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
 }

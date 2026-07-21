@@ -1,0 +1,15 @@
+Project Meeting Notes - Week 4
+
+Attendees: Alice, Bob, Carol
+
+Action items:
+1. Alice will finish the frontend by Friday
+2. Bob needs to update the API documentation
+3. Carol is investigating a performance issue in the database queries
+
+Key decisions:
+- We will use PostgreSQL instead of SQLite for production
+- Deployment is scheduled for next Monday
+- All PRs need two approvals before merging
+
+Next meeting: Same time next week
