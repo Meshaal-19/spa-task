@@ -127,3 +127,53 @@ How do I connect a React frontend to a FastAPI backend with JWT authentication?
 
 Outcome:
 Added Login and Register pages. JWT token stored in localStorage after login. Notes page fetches from the API and supports create, edit and delete. Navbar shows a logout button when logged in.
+
+## 21 July 2026
+
+### Task: Build an AI research agent
+
+Prompt:
+How do I build an AI agent in Python that can search the web and answer multi-step questions?
+
+Outcome:
+Built an agent using the Anthropic API with a ReAct loop. Agent decides which tool to call, calls it, and keeps going until it has a final answer.
+
+---
+
+### Task: Add memory to the agent
+
+Prompt:
+How do I make an AI agent remember things from earlier in the conversation?
+
+Outcome:
+Built a Memory class that stores facts as strings and injects them into the system prompt so the agent can recall them later.
+
+---
+
+### Task: Add hooks for logging tool calls
+
+Prompt:
+How do I log every tool call an AI agent makes with timestamps?
+
+Outcome:
+Added before_tool_call and after_tool_call functions that print to the console and write to agent_log.txt with timestamps and duration in ms.
+
+---
+
+### Task: Add a file-read plugin
+
+Prompt:
+How do I let an AI agent read .txt and .pdf files?
+
+Outcome:
+Built a read_file tool using pypdf for PDFs and plain open() for text files. Output is capped at 3000 characters.
+
+---
+
+### Task: Demo multi-hop agent
+
+Prompt:
+How do I test that my agent can chain multiple tool calls to answer a complex question?
+
+Outcome:
+Wrote a demo with 3 questions: web search + remember, file read, and memory recall. All 3 working correctly.
