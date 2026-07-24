@@ -3,8 +3,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* ── Navbar ───────────────────────────────────────────────────────────────── */
-
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -36,13 +34,9 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ── Layout container ─────────────────────────────────────────────────────── */
-
 .container {
   padding: 40px;
 }
-
-/* ── Contact form (scoped to keep existing behaviour) ─────────────────────── */
 
 form {
   display: flex;
@@ -77,8 +71,6 @@ p {
   color: green;
   font-weight: bold;
 }
-
-/* ── Button system ────────────────────────────────────────────────────────── */
 
 .btn {
   width: auto;
@@ -133,8 +125,6 @@ p {
   font-size: 16px;
 }
 
-/* ── Error banner ─────────────────────────────────────────────────────────── */
-
 .error-banner {
   background: #fee2e2;
   border: 1px solid #fca5a5;
@@ -143,8 +133,6 @@ p {
   margin-bottom: 16px;
   padding: 10px 14px;
 }
-
-/* ── Auth pages (Login / Register) ───────────────────────────────────────── */
 
 .auth-page {
   min-height: 100vh;
@@ -193,8 +181,6 @@ p {
 .auth-link a:hover {
   text-decoration: underline;
 }
-
-/* ── Notes page ───────────────────────────────────────────────────────────── */
 
 .notes-header {
   display: flex;

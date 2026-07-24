@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from auth import create_access_token, hash_password, verify_password
+from crud import get_user_by_email
 from database import get_db
 from models import User
 from schemas import Token, UserOut, UserRegister
@@ -14,7 +15,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
     "/register", response_model=UserOut, status_code=status.HTTP_201_CREATED
 )
 def register(payload: UserRegister, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == payload.email).first():
+    if get_user_by_email(db, payload.email):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered",
@@ -35,7 +36,7 @@ def login(
     form: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
-    user = db.query(User).filter(User.email == form.username).first()
+    user = get_user_by_email(db, form.username)
     if not user or not verify_password(form.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

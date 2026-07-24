@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from auth import get_current_user
+from crud import get_note_by_id
 from database import get_db
 from models import Note, User
 from schemas import NoteCreate, NoteOut, NoteUpdate
@@ -10,7 +11,7 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 
 
 def get_owned_note_or_404(note_id: int, current_user: User, db: Session) -> Note:
-    note = db.get(Note, note_id)
+    note = get_note_by_id(db, note_id)
     if note is None or note.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"

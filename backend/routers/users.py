@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from auth import get_current_user
+from crud import get_user_by_id
 from database import get_db
 from models import User
 from schemas import UserOut
@@ -30,7 +31,7 @@ def get_user(
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user),
 ):
-    user = db.get(User, user_id)
+    user = get_user_by_id(db, user_id)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
