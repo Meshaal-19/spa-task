@@ -1,7 +1,18 @@
-import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
 import { validateForm } from "./validation";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Notes from "./pages/Notes";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const initialFormData = {
   name: "",
@@ -9,7 +20,7 @@ const initialFormData = {
   message: "",
 };
 
-function Layout() {
+function Layout({ token, onLogout }) {
   return (
     <>
       <nav className="navbar">
@@ -19,6 +30,16 @@ function Layout() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
+          {token ? (
+            <>
+              <Link to="/notes">Notes</Link>
+              <button className="logout-btn" onClick={onLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
         </div>
       </nav>
 
@@ -123,13 +144,37 @@ function Contact() {
 }
 
 function App() {
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+
+  function handleLogin(newToken) {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setToken(null);
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onLogin={handleLogin} />} />
+
+        <Route element={<Layout token={token} onLogout={handleLogout} />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/notes"
+            element={
+              <ProtectedRoute token={token}>
+                <Notes />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>
