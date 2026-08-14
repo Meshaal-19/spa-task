@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file: ./backend/.env
+    volumes:
+      - ./backend/processai.db:/app/processai.db
+    networks:
+      - processai-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5174:80"
+    depends_on:
+      - backend
+    networks:
+      - processai-net
+
+networks:
+  processai-net:
+    driver: bridge
