@@ -6,9 +6,12 @@ from database import get_db
 from models import Anomaly, Investigation, User
 from schemas import InvestigationOut
 from auth import get_current_user
+from agents.triage import triage
 from agents.investigator import investigate
 from agents.tracer import log_tool_call
 from constants import MODEL as DEEP_MODEL
+
+TRIAGE_MODEL_NAME = "llama-3.1-8b (triage only)"
 
 router = APIRouter(prefix="/investigations", tags=["investigations"])
 
@@ -27,17 +30,44 @@ def trigger_investigation(
     anomaly.status = "investigating"
     db.commit()
 
-    deep_args = {"pid": anomaly.pid, "name": anomaly.process_name, "cpu_pct": anomaly.cpu_pct}
+    # ── Step 1: Triage (Llama 3.1 8B via OpenRouter) ──────────────────────────
     t0 = time.monotonic()
-    deep = investigate(anomaly)
-    log_tool_call("investigator", "investigate", deep_args, json.dumps(deep), int((time.monotonic() - t0) * 1000))
+    triage_result = triage(anomaly)
+    log_tool_call(
+        "triage", "classify",
+        {"pid": anomaly.pid, "name": anomaly.process_name, "cpu_pct": anomaly.cpu_pct},
+        json.dumps(triage_result),
+        int((time.monotonic() - t0) * 1000),
+    )
+
+    needs_deep = triage_result.get("needs_deep_investigation", True)
+
+    # ── Step 2: Deep investigation (Claude Haiku + MCP tools) — if warranted ──
+    if needs_deep:
+        t1 = time.monotonic()
+        deep = investigate(anomaly)
+        log_tool_call(
+            "investigator", "investigate",
+            {"pid": anomaly.pid, "name": anomaly.process_name, "cpu_pct": anomaly.cpu_pct},
+            json.dumps(deep),
+            int((time.monotonic() - t1) * 1000),
+        )
+        model_used = DEEP_MODEL
+    else:
+        # Triage decided this is low severity — no deep investigation needed
+        deep = {
+            "findings": f"[Triage only] {triage_result.get('summary', 'Low severity anomaly — no unusual patterns detected.')}",
+            "recommendation": "No immediate action required. Continue monitoring.",
+            "confidence": 0.6,
+        }
+        model_used = TRIAGE_MODEL_NAME
 
     inv = Investigation(
         anomaly_id=anomaly.id,
         findings=deep.get("findings"),
         recommendation=deep.get("recommendation"),
         confidence=deep.get("confidence"),
-        model_used=DEEP_MODEL,
+        model_used=model_used,
     )
 
     db.add(inv)
