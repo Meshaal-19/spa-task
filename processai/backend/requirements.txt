@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+fastmcp
+sqlalchemy
+psutil
+anthropic
+requests
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+pytest
+pytest-asyncio
+httpx
+bcrypt==4.0.1
